@@ -1,15 +1,17 @@
 // DATA KANDIDAT
 const defaultCandidates = [
-  { id: 1, number: '01', name: 'Ahmad Fauzi & Rina Melati', vision: 'Mewujudkan OSIS/DPK yang responsif, inovatif, dan berakhlak mulia.', photo: 'paslon01.jpg' },
-  { id: 2, number: '02', name: 'Bagas Pratama & Siti Nurhaliza', vision: 'Meningkatkan prestasi akademik dan non-akademik siswa melalui ekstrakurikuler unggulan.', photo: 'paslon02.jpg' },
-  { id: 3, number: '03', name: 'Citra Dewi & Kevin Sanjaya', vision: 'Menciptakan lingkungan sekolah hijau, ramah lingkungan, dan inklusif.', photo: 'paslon03.jpg' },
-  { id: 4, number: '04', name: 'Dion Permana & Annisa Putri', vision: 'Optimalisasi fasilitas digital dan wadah aspirasi siswa yang terbuka.', photo: 'paslon04.jpg' },
-  { id: 5, number: '05', name: 'Eka Wijaya & Nadia Rahma', vision: 'Mengembangkan jiwa kewirausahaan siswa melalui event bazar berkala.', photo: 'paslon05.jpg' },
-  { id: 6, number: '06', name: 'Fajar Nugraha & Maya Lestari', vision: 'Mempererat persaudaraan antar kelas lewat kompetisi seni dan olahraga.', photo: 'paslon06.jpg' },
-  { id: 7, number: '07', name: 'Gilang Ramadhan & Tari Sukma', vision: 'Menanamkan budaya disiplin, saling menghargai, dan bebas perundungan.', photo: 'paslon07.jpg' },
-  { id: 8, number: '08', name: 'Hendra Setiawan & Bella Safira', vision: 'Penguatan kegiatan literasi digital dan ruang karya kreatif siswa.', photo: 'paslon08.jpg' },
-  { id: 9, number: '09', name: 'Indra Lesmana & Amanda Manopo', vision: 'Meningkatkan peran DPK sebagai jembatan aspirasi siswa kepada pihak sekolah.', photo: 'paslon09.jpg' },
-  { id: 10, number: '10', name: 'Joko Widodo & Megawati S.', vision: 'Pemberdayaan OSIS dan DPK yang transparan, profesional, dan menyenangkan.', photo: 'paslon10.jpg' },
+  { id: 1, number: '01', name: 'Ahmad Fauzi & Rina Melati', vision: 'Mewujudkan OSIS/DPK yang responsif, inovatif, dan berakhlak mulia.', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80' },
+  { id: 2, number: '02', name: 'Bagas Pratama & Siti Nurhaliza', vision: 'Meningkatkan prestasi akademik dan non-akademik siswa melalui ekstrakurikuler unggulan.', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80' },
+  { id: 3, number: '03', name: 'Citra Dewi & Kevin Sanjaya', vision: 'Menciptakan lingkungan sekolah hijau, ramah lingkungan, dan inklusif.', photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80' },
+  { id: 4, number: '04', name: 'Dion Permana & Annisa Putri', vision: 'Optimalisasi fasilitas digital dan wadah aspirasi siswa yang terbuka.', photo: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=400&q=80' },
+  { id: 5, number: '05', name: 'Eka Wijaya & Nadia Rahma', vision: 'Mengembangkan jiwa kewirausahaan siswa melalui event bazar berkala.', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80' },
+  { id: 6, number: '06', name: 'Fajar Nugraha & Maya Lestari', vision: 'Mempererat persaudaraan antar kelas lewat kompetisi seni dan olahraga.', photo: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=400&q=80' },
+  { id: 7, number: '07', name: 'Gilang Ramadhan & Tari Sukma', vision: 'Menanamkan budaya disiplin, saling menghargai, dan bebas perundungan.', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80' },
+  { id: 8, number: '08', name: 'Hendra Setiawan & Bella Safira', vision: 'Penguatan kegiatan literasi digital dan ruang karya kreatif siswa.', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80' },
+  { id: 9, number: '09', name: 'Indra Lesmana & Amanda Manopo', vision: 'Meningkatkan peran DPK sebagai jembatan aspirasi siswa kepada pihak sekolah.', photo: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80' },
+  { id: 10, number: '10', name: 'Joko Widodo & Megawati S.', vision: 'Pemberdayaan OSIS dan DPK yang transparan, profesional, dan menyenangkan.', photo: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=400&q=80' },
+  { id: 11, number: '11', name: 'Nama Paslon 11', vision: 'Visi misi singkat kandidat nomor 11...', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80' },
+  { id: 12, number: '12', name: 'Nama Paslon 12', vision: 'Visi misi singkat kandidat nomor 12...', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80' }
 ];
 
 // STATE APLIKASI
