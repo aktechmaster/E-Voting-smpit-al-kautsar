@@ -1,16 +1,16 @@
 // DATA KANDIDAT
 const defaultCandidates = [
-  { id: 1, number: '01', name: 'Ahmad Fauzi & Rina Melati', vision: '-', photo: 'calon01.jpg' },
-  { id: 2, number: '02', name: 'Bagas Pratama & Siti Nurhaliza', vision: '-', photo: 'calon02.jpg' },
-  { id: 3, number: '03', name: 'Citra Dewi & Kevin Sanjaya', vision: '-', photo: 'calon03.jpg' },
-  { id: 4, number: '04', name: 'Dion Permana & Annisa Putri', vision: '-', photo: 'calon04.jpg' },
-  { id: 5, number: '05', name: 'Eka Wijaya & Nadia Rahma', vision: '-', photo: 'calon05.jpg' },
-  { id: 6, number: '06', name: 'Fajar Nugraha & Maya Lestari', vision: '-', photo: 'calon06.jpg' },
-  { id: 7, number: '07', name: 'Gilang Ramadhan & Tari Sukma', vision: '-', photo: 'calon07.jpg' },
-  { id: 8, number: '08', name: 'Hendra Setiawan & Bella Safira', vision: '-', photo: 'calon08.jpg' },
-  { id: 9, number: '09', name: 'Indra Lesmana & Amanda Manopo', vision: '-', photo: 'calon09.jpg' },
+  { id: 1, number: '01', name: 'Syifa Kamilia Lestari', vision: '-', photo: 'calon01.jpg' },
+  { id: 2, number: '02', name: 'Ashraf Fathi Nahari', vision: '-', photo: 'calon02.jpg' },
+  { id: 3, number: '03', name: 'Yudha Dwi Putra', vision: '-', photo: 'calon03.jpg' },
+  { id: 4, number: '04', name: 'Gishel Aprilia', vision: '-', photo: 'calon04.jpg' },
+  { id: 5, number: '05', name: 'Muhammad Anugrah Asyiddiqi', vision: '-', photo: 'calon05.jpg' },
+  { id: 6, number: '06', name: 'Arista Mutmainah', vision: '-', photo: 'calon06.jpg' },
+  { id: 7, number: '07', name: 'Muhammad Ilham Siregar', vision: '-', photo: 'calon07.jpg' },
+  { id: 8, number: '08', name: 'Salma Dzakiyya Azra', vision: '-', photo: 'calon08.jpg' },
+  { id: 9, number: '09', name: 'Iresti Rahmadhani', vision: '-', photo: 'calon09.jpg' },
   { id: 10, number: '10', name: 'Joko Widodo & Megawati S.', vision: '-', photo: 'calon10.jpg' },
-  { id: 11, number: '11', name: 'Nama Paslon 11', vision: '-', photo: 'calon11.jpg' },
+  { id: 11, number: '11', name: 'Nathan Abinayya Reditha', vision: '-', photo: 'calon11.jpg' },
   { id: 12, number: '12', name: 'Nama Paslon 12', vision: '-', photo: 'calon12.jpg' }
 ];
 
