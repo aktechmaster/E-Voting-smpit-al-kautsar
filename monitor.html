@@ -61,34 +61,35 @@
   <main class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
     
     <!-- Left: Stats Cards & Leaderboard (5 Cols) -->
-    <div class="lg:col-span-5 space-y-6">
+    <div class="lg:col-span-5 space-y-5 flex flex-col justify-between">
       
       <!-- Partisipasi Cards -->
       <div class="grid grid-cols-2 gap-4">
-        <div class="p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl">
+        <div class="p-4 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl">
           <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Suara Masuk</span>
-          <div id="totalVotes" class="text-4xl font-black text-white mt-2 font-mono">0</div>
-          <span class="text-[11px] text-slate-500 mt-1 block">Pemilih Sudah Mencoblos</span>
+          <div id="totalVotes" class="text-3xl font-black text-white mt-1 font-mono">0</div>
+          <span class="text-[11px] text-slate-500 mt-0.5 block">Pemilih Sudah Mencoblos</span>
         </div>
-        <div class="p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl">
+        <div class="p-4 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl">
           <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tingkat Partisipasi</span>
-          <div id="participationRate" class="text-4xl font-black text-brand-400 mt-2 font-mono">0%</div>
-          <span id="tokenRatio" class="text-[11px] text-slate-500 mt-1 block">0 dari 0 Token</span>
+          <div id="participationRate" class="text-3xl font-black text-brand-400 mt-1 font-mono">0%</div>
+          <span id="tokenRatio" class="text-[11px] text-slate-500 mt-0.5 block">0 dari 0 Token</span>
         </div>
       </div>
 
-      <!-- Leader Paslon Card -->
-      <div class="p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-emerald-950/30 to-slate-900 border border-emerald-500/30 shadow-2xl">
+      <!-- TOP 3 PASLON CARD -->
+      <div class="p-5 rounded-3xl bg-gradient-to-r from-slate-900 via-emerald-950/30 to-slate-900 border border-emerald-500/30 shadow-2xl space-y-3">
         <span class="text-xs font-black uppercase tracking-widest text-emerald-400 flex items-center gap-2">
-          <i class="fa-solid fa-trophy text-amber-400"></i> PEROLEHAN SUARA TERTINGGI
+          <i class="fa-solid fa-trophy text-amber-400"></i> TOP 3 PEROLEHAN SUARA
         </span>
-        <h2 id="leadingCandidateName" class="text-2xl font-black text-white mt-2 truncate">-</h2>
-        <p id="leadingCandidateVotes" class="text-sm font-semibold text-slate-300 mt-1">0 Suara (0%)</p>
+        <div id="top3Container" class="space-y-2 mt-2">
+          <!-- Dynamic Top 3 Rows -->
+        </div>
       </div>
 
       <!-- Live Log Box -->
-      <div class="p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl flex-grow">
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Status Server & System Log</h3>
+      <div class="p-4 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Status Server & System Log</h3>
         <div class="text-xs font-mono bg-slate-950 p-3 rounded-xl border border-slate-800 text-slate-400 space-y-1">
           <div class="flex items-center justify-between">
             <span>Status Data:</span>
@@ -114,7 +115,7 @@
   </main>
 
   <!-- Footer Smart Board -->
-  <footer class="max-w-7xl mx-auto w-full text-center py-4 border-t border-slate-800 text-xs text-slate-500 mt-6">
+  <footer class="max-w-7xl mx-auto w-full text-center py-3 border-t border-slate-800 text-xs text-slate-500 mt-4">
     Transparansi Demokrasi Sekolah &bull; E-Voting Kiosk System &bull; Live Monitor Lapangan
   </footer>
 
@@ -212,22 +213,46 @@
         let rate = totalTokens > 0 ? ((usedTokens / totalTokens) * 100).toFixed(1) : 0;
         document.getElementById('participationRate').innerText = `${rate}%`;
 
-        let maxVotes = -1;
-        let leader = '-';
-        let leaderPct = 0;
-
-        candidates.forEach(c => {
+        // Urutkan kandidat berdasarkan perolehan suara terbanyak
+        let sortedCandidates = candidates.map(c => {
           let count = votesMap[c.id] || 0;
-          if (count > maxVotes && count > 0) {
-            maxVotes = count;
-            leader = `No. ${c.number} ${c.name}`;
-            leaderPct = totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
-          }
-        });
+          let pct = totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
+          return { ...c, count, pct };
+        }).sort((a, b) => b.count - a.count);
 
-        document.getElementById('leadingCandidateName').innerText = leader;
-        document.getElementById('leadingCandidateVotes').innerText = `${maxVotes > -1 ? maxVotes : 0} Suara (${leaderPct}%)`;
+        // Render Peringkat Top 3
+        const top3Container = document.getElementById('top3Container');
+        top3Container.innerHTML = '';
 
+        const badges = [
+          { rank: '1', color: 'border-amber-500/40 bg-amber-500/10 text-amber-400', icon: 'fa-trophy text-amber-400' },
+          { rank: '2', color: 'border-slate-400/40 bg-slate-400/10 text-slate-300', icon: 'fa-medal text-slate-300' },
+          { rank: '3', color: 'border-amber-700/40 bg-amber-700/10 text-amber-500', icon: 'fa-award text-amber-600' }
+        ];
+
+        for (let i = 0; i < 3; i++) {
+          let item = sortedCandidates[i];
+          let b = badges[i];
+          let row = document.createElement('div');
+          row.className = `p-2.5 rounded-2xl border ${b.color} flex items-center justify-between transition-all`;
+          row.innerHTML = `
+            <div class="flex items-center space-x-3 overflow-hidden">
+              <span class="w-8 h-8 rounded-xl bg-slate-950 font-black text-xs flex items-center justify-center shrink-0 border border-slate-800">
+                <i class="fa-solid ${b.icon}"></i>
+              </span>
+              <div class="truncate">
+                <h4 class="text-xs font-bold text-white truncate">No. ${item.number} ${item.name}</h4>
+              </div>
+            </div>
+            <div class="text-right shrink-0 ml-2">
+              <span class="text-xs font-black text-white font-mono">${item.count} Suara</span>
+              <span class="text-[10px] text-slate-400 block font-semibold">${item.pct}%</span>
+            </div>
+          `;
+          top3Container.appendChild(row);
+        }
+
+        // Update Grafik Bar
         let chartData = candidates.map(c => votesMap[c.id] || 0);
         monitorChart.data.datasets[0].data = chartData;
         monitorChart.update();
