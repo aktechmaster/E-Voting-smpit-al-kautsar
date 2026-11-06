@@ -46,9 +46,14 @@
         <h1 class="text-3xl font-black text-white tracking-tight">PEMILIHAN DPK / DPS SEKOLAH</h1>
       </div>
     </div>
-    <div class="text-right">
-      <div id="liveClock" class="text-2xl font-black font-mono text-brand-400">00:00:00 WIB</div>
-      <p class="text-xs text-slate-400">Update Otomatis Setiap 3 Detik</p>
+    <div class="flex items-center space-x-4">
+      <div class="text-right">
+        <div id="liveClock" class="text-2xl font-black font-mono text-brand-400">00:00:00 WIB</div>
+        <p class="text-xs text-slate-400">Update Otomatis Setiap 3 Detik</p>
+      </div>
+      <button onclick="promptScriptUrl()" class="p-3 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-2xl transition" title="Atur Script URL">
+        <i class="fa-solid fa-sliders text-sky-400"></i>
+      </button>
     </div>
   </header>
 
@@ -135,9 +140,22 @@
       initChart();
       updateClock();
       setInterval(updateClock, 1000);
-      fetchLiveCount();
-      setInterval(fetchLiveCount, 3000); // Tarik data baru dari Sheets setiap 3 detik
+      if (!googleScriptUrl) {
+        promptScriptUrl();
+      } else {
+        fetchLiveCount();
+      }
+      setInterval(fetchLiveCount, 3000);
     };
+
+    function promptScriptUrl() {
+      let input = prompt("Masukkan Google Apps Script Web App URL:", googleScriptUrl);
+      if (input !== null && input.trim() !== "") {
+        googleScriptUrl = input.trim();
+        localStorage.setItem('evoting_script_url', googleScriptUrl);
+        fetchLiveCount();
+      }
+    }
 
     function updateClock() {
       document.getElementById('liveClock').innerText = new Date().toLocaleTimeString('id-ID') + ' WIB';
@@ -194,7 +212,6 @@
         let rate = totalTokens > 0 ? ((usedTokens / totalTokens) * 100).toFixed(1) : 0;
         document.getElementById('participationRate').innerText = `${rate}%`;
 
-        // Cari kandidat tertinggi
         let maxVotes = -1;
         let leader = '-';
         let leaderPct = 0;
@@ -211,7 +228,6 @@
         document.getElementById('leadingCandidateName').innerText = leader;
         document.getElementById('leadingCandidateVotes').innerText = `${maxVotes > -1 ? maxVotes : 0} Suara (${leaderPct}%)`;
 
-        // Update Grafik Bar
         let chartData = candidates.map(c => votesMap[c.id] || 0);
         monitorChart.data.datasets[0].data = chartData;
         monitorChart.update();
