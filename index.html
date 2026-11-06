@@ -54,6 +54,51 @@
 </head>
 <body class="bg-pattern text-slate-100 min-h-screen font-sans flex flex-col justify-between selection:bg-brand-500 selection:text-white">
   
+  <!-- ================= MODAL TOKEN 4-DIGIT (LAYAR AWAL TERKUNCI) ================= -->
+  <div id="tokenOverlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/95 backdrop-blur-xl transition-all">
+    <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center relative overflow-hidden">
+      
+      <!-- Header Modal -->
+      <div class="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-400 border border-brand-500/30 flex items-center justify-center mx-auto mb-3 text-2xl">
+        <i class="fa-solid fa-key"></i>
+      </div>
+      <h2 class="text-xl font-black text-white">Masukkan Kode Token</h2>
+      <p class="text-xs text-slate-400 mt-1">Masukkan 4-digit kode unik dari panitia untuk membuka surat suara.</p>
+
+      <!-- Display Digit Box -->
+      <div class="flex justify-center space-x-3 my-6">
+        <div id="digit1" class="w-12 h-14 rounded-xl bg-slate-800 border-2 border-slate-700 text-2xl font-black text-brand-400 flex items-center justify-center font-mono">-</div>
+        <div id="digit2" class="w-12 h-14 rounded-xl bg-slate-800 border-2 border-slate-700 text-2xl font-black text-brand-400 flex items-center justify-center font-mono">-</div>
+        <div id="digit3" class="w-12 h-14 rounded-xl bg-slate-800 border-2 border-slate-700 text-2xl font-black text-brand-400 flex items-center justify-center font-mono">-</div>
+        <div id="digit4" class="w-12 h-14 rounded-xl bg-slate-800 border-2 border-slate-700 text-2xl font-black text-brand-400 flex items-center justify-center font-mono">-</div>
+      </div>
+
+      <!-- On-Screen Keypad -->
+      <div class="grid grid-cols-3 gap-2.5 mb-4">
+        <button onclick="pressKey('1')" class="py-3 bg-slate-800 hover:bg-slate-700 active:bg-brand-600 text-white font-black text-lg rounded-xl transition border border-slate-700/60">1</button>
+        <button onclick="pressKey('2')" class="py-3 bg-slate-800 hover:bg-slate-700 active:bg-brand-600 text-white font-black text-lg rounded-xl transition border border-slate-700/60">2</button>
+        <button onclick="pressKey('3')" class="py-3 bg-slate-800 hover:bg-slate-700 active:bg-brand-600 text-white font-black text-lg rounded-xl transition border border-slate-700/60">3</button>
+        <button onclick="pressKey('4')" class="py-3 bg-slate-800 hover:bg-slate-700 active:bg-brand-600 text-white font-black text-lg rounded-xl transition border border-slate-700/60">4</button>
+        <button onclick="pressKey('5')" class="py-3 bg-slate-800 hover:bg-slate-700 active:bg-brand-600 text-white font-black text-lg rounded-xl transition border border-slate-700/60">5</button>
+        <button onclick="pressKey('6')" class="py-3 bg-slate-800 hover:bg-slate-700 active:bg-brand-600 text-white font-black text-lg rounded-xl transition border border-slate-700/60">6</button>
+        <button onclick="pressKey('7')" class="py-3 bg-slate-800 hover:bg-slate-700 active:bg-brand-600 text-white font-black text-lg rounded-xl transition border border-slate-700/60">7</button>
+        <button onclick="pressKey('8')" class="py-3 bg-slate-800 hover:bg-slate-700 active:bg-brand-600 text-white font-black text-lg rounded-xl transition border border-slate-700/60">8</button>
+        <button onclick="pressKey('9')" class="py-3 bg-slate-800 hover:bg-slate-700 active:bg-brand-600 text-white font-black text-lg rounded-xl transition border border-slate-700/60">9</button>
+        <button onclick="clearKey()" class="py-3 bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 font-bold text-xs rounded-xl transition border border-rose-500/30">Hapus</button>
+        <button onclick="pressKey('0')" class="py-3 bg-slate-800 hover:bg-slate-700 active:bg-brand-600 text-white font-black text-lg rounded-xl transition border border-slate-700/60">0</button>
+        <button onclick="deleteKey()" class="py-3 bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 font-bold text-sm rounded-xl transition border border-amber-500/30"><i class="fa-solid fa-backspace"></i></button>
+      </div>
+
+      <!-- Submit Button -->
+      <button id="btnVerifyToken" onclick="verifyTokenInput()" class="w-full py-3.5 bg-gradient-to-r from-brand-600 to-emerald-500 hover:from-brand-500 hover:to-emerald-400 text-white font-black text-sm rounded-xl shadow-lg shadow-brand-500/20 transition flex items-center justify-center space-x-2">
+        <span>BUKA SURAT SUARA</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+      
+      <p id="tokenErrorMessage" class="text-xs text-rose-400 font-semibold mt-3 hidden"></p>
+    </div>
+  </div>
+
   <!-- ================= HEADER SECTION ================= -->
   <header class="sticky top-0 z-30 bg-navy-950/90 backdrop-blur-md border-b border-slate-800 px-4 lg:px-8 py-3 transition-all">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
@@ -354,37 +399,9 @@
               <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
                 <i class="fa-brands fa-google text-emerald-400"></i> Kode Google Apps Script (Copy-Paste)
               </span>
-              <button onclick="copyAppsScriptCode()" class="text-[11px] px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
-                <i class="fa-solid fa-copy mr-1"></i> Salin Kode
-              </button>
             </div>
             <pre class="text-[11px] font-mono bg-slate-900 p-3 rounded-xl border border-slate-800/80 text-emerald-300 overflow-x-auto select-all leading-relaxed">
-function doPost(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var data = JSON.parse(e.postData.contents);
-  
-  // Header otomatis jika sheet masih kosong
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(["Waktu", "ID Calon", "Nomor Urut", "Nama Calon"]);
-  }
-  
-  sheet.appendRow([
-    new Date(),
-    data.candidateId,
-    data.candidateNumber,
-    data.candidateName
-  ]);
-  
-  return ContentService.createTextOutput(JSON.stringify({"result": "success"}))
-    .setMimeType(ContentService.MimeType.JSON);
-}</pre>
-            <ol class="text-[11px] text-slate-400 mt-3 space-y-1 list-decimal list-inside">
-              <li>Buka <strong>Google Sheets baru</strong> &rarr; pilih menu <strong>Extensions &gt; Apps Script</strong>.</li>
-              <li>Hapus kode bawaan dan <strong>Paste kode di atas</strong>.</li>
-              <li>Klik <strong>Deploy &gt; New Deployment</strong> &rarr; pilih <strong>Web App</strong>.</li>
-              <li>Set <em>"Who has access"</em> menjadi <strong>Anyone (Siapa Saja)</strong> &rarr; klik <strong>Deploy</strong>.</li>
-              <li>Salin <strong>Web App URL</strong> dan tempelkan ke kolom input di atas.</li>
-            </ol>
+Lihat panduan backend Apps Script Langkah 1 untuk kode lengkap dengan fitur token.</pre>
           </div>
         </div>
 
