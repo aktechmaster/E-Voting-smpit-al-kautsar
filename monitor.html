@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE COUNT REKAPITULASI - PEMILU DPK/DPS</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            brand: { 500: '#22c55e', 600: '#16a34a' },
+            navy: { 800: '#1e293b', 900: '#0f172a', 950: '#020617' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .bg-pattern {
+      background-color: #020617;
+      background-image: radial-gradient(#1e293b 1.5px, transparent 1.5px);
+      background-size: 30px 30px;
+    }
+  </style>
+</head>
+<body class="bg-pattern text-slate-100 min-h-screen p-6 font-sans flex flex-col justify-between">
+
+  <!-- Header Smart Board -->
+  <header class="max-w-7xl mx-auto w-full flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
+    <div class="flex items-center space-x-4">
+      <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-brand-500/20">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <div>
+        <span class="px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded-full text-xs font-black uppercase tracking-widest flex items-center gap-2 w-max mb-1">
+          <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span> LIVE COUNT REAL-TIME
+        </span>
+        <h1 class="text-3xl font-black text-white tracking-tight">PEMILIHAN DPK / DPS SEKOLAH</h1>
+      </div>
+    </div>
+    <div class="text-right">
+      <div id="liveClock" class="text-2xl font-black font-mono text-brand-400">00:00:00 WIB</div>
+      <p class="text-xs text-slate-400">Update Otomatis Setiap 3 Detik</p>
+    </div>
+  </header>
+
+  <!-- Main Content Grid -->
+  <main class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
+    
+    <!-- Left: Stats Cards & Leaderboard (5 Cols) -->
+    <div class="lg:col-span-5 space-y-6">
+      
+      <!-- Partisipasi Cards -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Suara Masuk</span>
+          <div id="totalVotes" class="text-4xl font-black text-white mt-2 font-mono">0</div>
+          <span class="text-[11px] text-slate-500 mt-1 block">Pemilih Sudah Mencoblos</span>
+        </div>
+        <div class="p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tingkat Partisipasi</span>
+          <div id="participationRate" class="text-4xl font-black text-brand-400 mt-2 font-mono">0%</div>
+          <span id="tokenRatio" class="text-[11px] text-slate-500 mt-1 block">0 dari 0 Token</span>
+        </div>
+      </div>
+
+      <!-- Leader Paslon Card -->
+      <div class="p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-emerald-950/30 to-slate-900 border border-emerald-500/30 shadow-2xl">
+        <span class="text-xs font-black uppercase tracking-widest text-emerald-400 flex items-center gap-2">
+          <i class="fa-solid fa-trophy text-amber-400"></i> PEROLEHAN SUARA TERTINGGI
+        </span>
+        <h2 id="leadingCandidateName" class="text-2xl font-black text-white mt-2 truncate">-</h2>
+        <p id="leadingCandidateVotes" class="text-sm font-semibold text-slate-300 mt-1">0 Suara (0%)</p>
+      </div>
+
+      <!-- Live Log Box -->
+      <div class="p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl flex-grow">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Status Server & System Log</h3>
+        <div class="text-xs font-mono bg-slate-950 p-3 rounded-xl border border-slate-800 text-slate-400 space-y-1">
+          <div class="flex items-center justify-between">
+            <span>Status Data:</span>
+            <span id="syncStatus" class="text-emerald-400 font-bold">Terhubung</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span>Terakhir Diperbarui:</span>
+            <span id="lastUpdated">-</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right: Big Visual Chart (7 Cols) -->
+    <div class="lg:col-span-7 p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl flex flex-col justify-between">
+      <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4">Grafik Perolehan Suara Paslon (Real-Time)</h3>
+      <div class="flex-grow relative h-[400px]">
+        <canvas id="liveBoardChart"></canvas>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer Smart Board -->
+  <footer class="max-w-7xl mx-auto w-full text-center py-4 border-t border-slate-800 text-xs text-slate-500 mt-6">
+    Transparansi Demokrasi Sekolah &bull; E-Voting Kiosk System &bull; Live Monitor Lapangan
+  </footer>
+
+  <script>
+    const defaultCandidates = [
+      { id: 1, number: '01', name: 'Ahmad Fauzi & Rina Melati' },
+      { id: 2, number: '02', name: 'Bagas Pratama & Siti Nurhaliza' },
+      { id: 3, number: '03', name: 'Citra Dewi & Kevin Sanjaya' },
+      { id: 4, number: '04', name: 'Dion Permana & Annisa Putri' },
+      { id: 5, number: '05', name: 'Eka Wijaya & Nadia Rahma' },
+      { id: 6, number: '06', name: 'Fajar Nugraha & Maya Lestari' },
+      { id: 7, number: '07', name: 'Gilang Ramadhan & Tari Sukma' },
+      { id: 8, number: '08', name: 'Hendra Setiawan & Bella Safira' },
+      { id: 9, number: '09', name: 'Indra Lesmana & Amanda Manopo' },
+      { id: 10, number: '10', name: 'Joko Widodo & Megawati S.' },
+    ];
+
+    let candidates = JSON.parse(localStorage.getItem('evoting_candidates')) || defaultCandidates;
+    let googleScriptUrl = localStorage.getItem('evoting_script_url') || '';
+    let monitorChart = null;
+
+    window.onload = function() {
+      initChart();
+      updateClock();
+      setInterval(updateClock, 1000);
+      fetchLiveCount();
+      setInterval(fetchLiveCount, 3000); // Tarik data baru dari Sheets setiap 3 detik
+    };
+
+    function updateClock() {
+      document.getElementById('liveClock').innerText = new Date().toLocaleTimeString('id-ID') + ' WIB';
+    }
+
+    function initChart() {
+      const ctx = document.getElementById('liveBoardChart').getContext('2d');
+      const labels = candidates.map(c => `No. ${c.number}`);
+      
+      monitorChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Jumlah Suara',
+            data: new Array(candidates.length).fill(0),
+            backgroundColor: 'rgba(34, 197, 94, 0.75)',
+            borderColor: '#22c55e',
+            borderWidth: 2,
+            borderRadius: 8,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, ticks: { precision: 0, color: '#94a3b8', font: { size: 14 } }, grid: { color: 'rgba(255, 255, 255, 0.05)' } },
+            x: { ticks: { color: '#94a3b8', font: { size: 13, weight: 'bold' } }, grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    async function fetchLiveCount() {
+      if (!googleScriptUrl) {
+        document.getElementById('syncStatus').innerText = "Belum Diatur Script URL";
+        document.getElementById('syncStatus').className = "text-amber-400 font-bold";
+        return;
+      }
+
+      try {
+        let res = await fetch(googleScriptUrl);
+        let data = await res.json();
+        
+        let votesMap = data.recap || {};
+        let totalVotes = data.totalVotes || 0;
+        let totalTokens = data.totalTokens || 0;
+        let usedTokens = data.usedTokens || 0;
+
+        document.getElementById('totalVotes').innerText = totalVotes;
+        document.getElementById('tokenRatio').innerText = `${usedTokens} dari ${totalTokens} Token Digunakan`;
+        
+        let rate = totalTokens > 0 ? ((usedTokens / totalTokens) * 100).toFixed(1) : 0;
+        document.getElementById('participationRate').innerText = `${rate}%`;
+
+        // Cari kandidat tertinggi
+        let maxVotes = -1;
+        let leader = '-';
+        let leaderPct = 0;
+
+        candidates.forEach(c => {
+          let count = votesMap[c.id] || 0;
+          if (count > maxVotes && count > 0) {
+            maxVotes = count;
+            leader = `No. ${c.number} ${c.name}`;
+            leaderPct = totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
+          }
+        });
+
+        document.getElementById('leadingCandidateName').innerText = leader;
+        document.getElementById('leadingCandidateVotes').innerText = `${maxVotes > -1 ? maxVotes : 0} Suara (${leaderPct}%)`;
+
+        // Update Grafik Bar
+        let chartData = candidates.map(c => votesMap[c.id] || 0);
+        monitorChart.data.datasets[0].data = chartData;
+        monitorChart.update();
+
+        document.getElementById('syncStatus').innerText = "Terhubung (Live)";
+        document.getElementById('syncStatus').className = "text-emerald-400 font-bold";
+        document.getElementById('lastUpdated').innerText = new Date().toLocaleTimeString('id-ID');
+
+      } catch (err) {
+        document.getElementById('syncStatus').innerText = "Gagal Memuat Data";
+        document.getElementById('syncStatus').className = "text-rose-400 font-bold";
+      }
+    }
+  </script>
+</body>
+</html>
