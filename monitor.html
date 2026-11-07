@@ -120,22 +120,23 @@
   </footer>
 
   <script>
+    // Data Default Nama Siswa Asli (Match 100% dengan E-Voting)
     const defaultCandidates = [
-  { id: 1, number: '01', name: 'Ahmad Fauzi & Rina Melati' },
-  { id: 2, number: '02', name: 'Bagas Pratama & Siti Nurhaliza' },
-  { id: 3, number: '03', name: 'Citra Dewi & Kevin Sanjaya' },
-  { id: 4, number: '04', name: 'Dion Permana & Annisa Putri' },
-  { id: 5, number: '05', name: 'Eka Wijaya & Nadia Rahma' },
-  { id: 6, number: '06', name: 'Fajar Nugraha & Maya Lestari' },
-  { id: 7, number: '07', name: 'Gilang Ramadhan & Tari Sukma' },
-  { id: 8, number: '08', name: 'Hendra Setiawan & Bella Safira' },
-  { id: 9, number: '09', name: 'Indra Lesmana & Amanda Manopo' },
-  { id: 10, number: '10', name: 'Joko Widodo & Megawati S.' },
-  { id: 11, number: '11', name: 'Nama Paslon 11' },
-  { id: 12, number: '12', name: 'Nama Paslon 12' }
-];
+      { id: 1, number: '01', name: 'Syifa Kamilia Lestari' },
+      { id: 2, number: '02', name: 'Ashraf Fathi Nahari' },
+      { id: 3, number: '03', name: 'Yudha Dwi Putra' },
+      { id: 4, number: '04', name: 'Gishel Aprilia' },
+      { id: 5, number: '05', name: 'Muhammad Anugrah Asyiddiqi' },
+      { id: 6, number: '06', name: 'Arista Mutmainah' },
+      { id: 7, number: '07', name: 'Muhammad Ilham Siregar' },
+      { id: 8, number: '08', name: 'Salma Dzakiyya Azra' },
+      { id: 9, number: '09', name: 'Iresti Rahmadhani' },
+      { id: 10, number: '10', name: 'Joko Widodo & Megawati S.' },
+      { id: 11, number: '11', name: 'Paslon 11' },
+      { id: 12, number: '12', name: 'Paslon 12' },
+    ];
 
-    let candidates = JSON.parse(localStorage.getItem('evoting_candidates')) || defaultCandidates;
+    let candidates = defaultCandidates;
     let googleScriptUrl = localStorage.getItem('evoting_script_url') || '';
     let monitorChart = null;
 
@@ -205,9 +206,18 @@
         let data = await res.json();
         
         let votesMap = data.recap || {};
+        let detailsMap = data.candidateDetails || {};
         let totalVotes = data.totalVotes || 0;
         let totalTokens = data.totalTokens || 0;
         let usedTokens = data.usedTokens || 0;
+
+        // Sinkronisasi nama & nomor paslon secara dinamis dari Spreadsheet
+        candidates.forEach(c => {
+          if (detailsMap[c.id] && detailsMap[c.id].name) {
+            c.name = detailsMap[c.id].name;
+            if (detailsMap[c.id].number) c.number = detailsMap[c.id].number;
+          }
+        });
 
         document.getElementById('totalVotes').innerText = totalVotes;
         document.getElementById('tokenRatio').innerText = `${usedTokens} dari ${totalTokens} Token Digunakan`;
@@ -255,8 +265,8 @@
         }
 
         // Update Grafik Bar
-        let chartData = candidates.map(c => votesMap[c.id] || 0);
-        monitorChart.data.datasets[0].data = chartData;
+        monitorChart.data.labels = candidates.map(c => `No. ${c.number}`);
+        monitorChart.data.datasets[0].data = candidates.map(c => votesMap[c.id] || 0);
         monitorChart.update();
 
         document.getElementById('syncStatus').innerText = "Terhubung (Live)";
