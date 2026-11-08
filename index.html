@@ -149,7 +149,7 @@
   </header>
 
   <!-- ================= MAIN VOTING KIOSK AREA ================= -->
-  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-6 flex-grow w-full">
+  <main class="max-w-[95rem] mx-auto px-4 lg:px-6 py-6 flex-grow w-full">
     
     <!-- Instruction Banner -->
     <div class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/20 flex items-center justify-between shadow-xl">
@@ -168,8 +168,8 @@
       </div>
     </div>
 
-    <!-- 10 CANDIDATES GRID CONTAINER -->
-    <div id="candidatesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    <!-- 12 CANDIDATES GRID CONTAINER (2 BARIS x 6 KOLOM) -->
+    <div id="candidatesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5">
       <!-- Generated dynamically by JS -->
     </div>
 
@@ -373,7 +373,7 @@
           <i class="fa-solid fa-file-excel mr-1.5"></i> Google Sheets API
         </button>
         <button id="tabBtnCandidates" onclick="switchSettingsTab('candidates')" class="py-2.5 px-4 text-slate-400 hover:text-slate-200 border-b-2 border-transparent transition">
-          <i class="fa-solid fa-users-gear mr-1.5"></i> Edit 10 Kandidat
+          <i class="fa-solid fa-users-gear mr-1.5"></i> Edit 12 Kandidat
         </button>
       </div>
 
@@ -407,7 +407,7 @@ Lihat panduan backend Apps Script Langkah 1 untuk kode lengkap dengan fitur toke
 
         <!-- TAB 2: CANDIDATES EDITING -->
         <div id="tabCandidatesContent" class="hidden space-y-4">
-          <p class="text-xs text-slate-400">Ubah nama dan informasi singkat 10 paslon di bawah ini:</p>
+          <p class="text-xs text-slate-400">Ubah nama dan informasi singkat 12 paslon di bawah ini:</p>
           <div id="candidateEditList" class="space-y-3">
             <!-- Dynamic Candidate Edit Inputs -->
           </div>
