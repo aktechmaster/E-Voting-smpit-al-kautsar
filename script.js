@@ -11,7 +11,7 @@ const defaultCandidates = [
   { id: 9, number: '09', name: 'Iresti Rahmadhani', vision: '-', photo: 'calon09.jpg' },
   { id: 10, number: '10', name: 'Joko Widodo & Megawati S.', vision: '-', photo: 'calon10.jpg' },
   { id: 11, number: '11', name: 'Nathan Abinayya Reditha', vision: '-', photo: 'calon11.jpg' },
-  { id: 12, number: '12', name: 'Nama Paslon 12', vision: '-', photo: 'calon12.jpg' }
+  { id: 12, number: '12', name: 'Nayla Lathifah', vision: '-', photo: 'calon12.jpeg' }
 ];
 
 // STATE APLIKASI
