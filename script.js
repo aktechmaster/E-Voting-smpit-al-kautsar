@@ -160,7 +160,7 @@ function renderCandidates() {
         </div>
         <button class="mt-4 w-full py-2.5 px-3 rounded-xl bg-slate-800 group-hover:bg-brand-600 text-slate-200 group-hover:text-white font-black text-xs transition duration-300 flex items-center justify-center space-x-2 shadow-sm border border-slate-700 group-hover:border-brand-500">
           <i class="fa-solid fa-vote-yea"></i>
-          <span>COBLOS PASLON</span>
+          <span>COBLOS CALON DPK</span>
         </button>
       </div>
     `;
